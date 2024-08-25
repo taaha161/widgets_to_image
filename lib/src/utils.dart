@@ -12,15 +12,10 @@ class WidgetsToImageController {
   }) async {
     try {
       /// boundary widget by GlobalKey
-      RenderRepaintBoundary? boundary = containerKey.currentContext
-          ?.findRenderObject() as RenderRepaintBoundary?;
-
-      /// convert boundary to image
-      final image = await boundary.toImage(pixelRatio: pixelRatio);
-
-      /// set ImageByteFormat
-      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-      final pngBytes = byteData?.buffer.asUint8List();
+    RenderRepaintBoundary boundary = globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    ui.Image image = await boundary.toImage();
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData!.buffer.asUint8List();
       return pngBytes;
     } catch (e) {
       rethrow;
